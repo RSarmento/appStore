@@ -1,0 +1,4 @@
+/app/src/main/java/br/roga/appStore/repository/AppRepository.java
+/app/src/main/java/br/roga/domain/App.java
+/app/src/main/java/br/roga/appStore/AppStoreApplication.java
+/app/src/main/java/br/roga/appStore/controller/AppController.java

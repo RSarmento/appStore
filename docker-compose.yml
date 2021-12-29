@@ -1,0 +1,43 @@
+version: '3.2'
+services:
+  pgsql:
+    image: postgres:11-alpine
+    environment:
+      POSTGRES_USER: rogadev
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: app-store-db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - roga-network
+  api:
+    build:
+      context: ./backend/
+      dockerfile: Dockerfile-dev
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./backend:/app
+    networks:
+      - roga-network
+    depends_on:
+      - pgsql
+  #web:
+    #build:
+      #context: ./frontend/
+      #dockerfile: Dockerfile-dev
+    #volumes:
+      #- ./frontend:/app
+    #ports:
+      #- "8081:8081"
+    #networks:
+      #- roga-network
+    #depends_on:
+      #- api
+networks:
+  roga-network:
+    driver: bridge
+volumes:
+  postgres-data:
