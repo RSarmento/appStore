@@ -1,1 +1,5 @@
+br/roga/appStore/AppStoreApplication.class
 br/roga/appStore/domain/App.class
+br/roga/appStore/repository/AppRepository.class
+br/roga/appStore/expections/DataValidationException.class
+br/roga/appStore/controller/AppController.class

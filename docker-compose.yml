@@ -24,18 +24,6 @@ services:
       - roga-network
     depends_on:
       - pgsql
-  #web:
-    #build:
-      #context: ./frontend/
-      #dockerfile: Dockerfile-dev
-    #volumes:
-      #- ./frontend:/app
-    #ports:
-      #- "8081:8081"
-    #networks:
-      #- roga-network
-    #depends_on:
-      #- api
 networks:
   roga-network:
     driver: bridge

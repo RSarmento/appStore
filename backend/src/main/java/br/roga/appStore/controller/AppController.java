@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -20,18 +21,9 @@ public class AppController {
     private AppRepository appRepository;
 
     @PostMapping
-    public ResponseEntity<App> createApp(@RequestParam("name") String name,
-                                         @RequestParam("type") String type,
-                                         @RequestParam("price") Double price) throws DataValidationException {
-        App newApp = new App();
-        newApp.setName(name);
-        newApp.setType(type);
-        newApp.setPrice(price);
-
-        validateNewApp(newApp);
-
-        appRepository.save(newApp);
-        return ResponseEntity.ok().body(newApp);
+    public ResponseEntity<App> createApp(@Valid @RequestBody App app) throws DataValidationException {
+        appRepository.save(app);
+        return ResponseEntity.ok().body(appRepository.save(app));
     }
 
     @GetMapping
@@ -40,24 +32,16 @@ public class AppController {
     }
 
     @GetMapping("/byNameAndType")
-    public ResponseEntity<Page<App>> getAppsByNameAndType(@RequestParam("name") String name,
-                                                          @RequestParam("type") String type,
+    public ResponseEntity<Page<App>> getAppsByNameAndType(@RequestParam(value = "name", required = false, defaultValue = "") String name,
+                                                          @RequestParam(value = "type", required = false, defaultValue = "") String type,
                                                           Pageable pageable){
         return ResponseEntity.ok(appRepository.findAllByNameAndType(name, type, pageable));
     }
 
-    @GetMapping("/lowerPrice")
+    @GetMapping("/byTypeAndLowerPrice")
     public ResponseEntity<Page<App>> getAppsByTypeAndLowerPrice(@RequestParam("type") String type,
                                                                 Pageable pageable){
         return ResponseEntity.ok(appRepository.findAllByTypeOrderByLowerPrice(type, pageable));
     }
 
-    private void validateNewApp(App newApp) throws DataValidationException {
-        if (newApp.getName() == null || newApp.getName().isBlank() || newApp.getName().isEmpty())
-            throw new DataValidationException("App name cannot be empty. ");
-        if (newApp.getType() == null || newApp.getType().isBlank() || newApp.getType().isEmpty())
-            throw new DataValidationException("App type cannot be empty. ");
-        if (newApp.getPrice() == null || newApp.getPrice() < 0.0)
-            throw new DataValidationException("App price cannot be negative. ");
-    }
 }

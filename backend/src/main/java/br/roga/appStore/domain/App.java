@@ -1,10 +1,18 @@
 package br.roga.appStore.domain;
 
+import br.roga.appStore.validation.PostValidation;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "app")
@@ -21,14 +29,16 @@ public class App implements Serializable {
     })
     private Long id;
 
+    @NotBlank(groups = {PostValidation.class})
     @Column(name = "name")
     private String name;
 
+    @NotBlank(groups = {PostValidation.class})
     @Column(name = "type")
     private String type;
 
+    @PositiveOrZero
+    @NotBlank(groups = {PostValidation.class})
     @Column(name = "price")
     private Double price;
-
-
 }

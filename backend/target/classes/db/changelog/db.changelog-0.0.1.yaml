@@ -27,13 +27,5 @@ databaseChangeLog:
                   type: float
                   constraints:
                     nullable: false
-              - column:
-                  name: created_at
-                  type: timestamp with time zone
-                  constraints:
-                    nullable: false
-              - column:
-                  name: updated_at
-                  type: timestamp with time zone
-                  constraints:
-                    nullable: false
+        - createSequence:
+            sequenceName: seq_apps_id
